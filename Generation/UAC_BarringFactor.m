@@ -1,0 +1,20 @@
+classdef UAC_BarringFactor
+    enumeration
+        p00
+        p05
+        p10
+        p15
+        p20
+        p25
+        p30
+        p40
+        p50
+        p60
+        p70
+        p75
+        p80
+        p85
+        p90
+        p95
+    end
+end
