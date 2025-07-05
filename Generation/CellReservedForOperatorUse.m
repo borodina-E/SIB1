@@ -1,6 +1,6 @@
 classdef CellReservedForOperatorUse
     enumeration
-        reserved(1)
-        notReserved(0)
+        reserved
+        notReserved
     end
 end

@@ -41,32 +41,38 @@ plmn1.mnc.mnc = [9 9];
 % Первый элемент массива
 info1 = PLMN_IdentityInfo();
 info1.plmn_IdentityList = plmn1;
-info1.cellIdentity = ones(1,36); 
+info1.cellIdentity = CellIdentity();  
+info1.cellIdentity.cellIdentity = ones(1,36);
+info1.cellReservedForOperatorUse = CellReservedForOperatorUse.reserved;
+
 
 % % Второй элемент массива
 % info2 = PLMN_IdentityInfo();
 % info2.plmn_IdentityList = plmn2;
-% info2.cellReservedForOperatorUse = 0;
+%info2.cellIdentity = CellIdentity();  
+%info2.cellIdentity.cellIdentity = ones(1,35);
+%info2.cellReservedForOperatorUse = CellReservedForOperatorUse.notReserved;
+
 
 % Собираем SIB1
 cfgSIB1.cellAccessRelatedInfo = CellAccessRelatedInfo(info1);
-%cfgSIB1.cellAccessRelatedInfo = CellAccessRelatedInfo(info1, info2);
+%cfgSIB1.cellAccessRelatedInfo = CellAccessRelatedInfo(info1, info2); %для нескольких элементов
 
 cfgSIB1.cellSelectionInfo.q_RxLevMin.q_RxLevMin = -30;
 
 % Первый элемент массива
 set1 = UAC_BarringInfoSet();
-set1.uac_BarringFactor = 'p05';
-set1.uac_BarringTime = 's8';
+set1.uac_BarringFactor = UAC_BarringFactor('p05');
+set1.uac_BarringTime = UAC_BarringTime('s8');
 set1.uac_BarringForAccessIdentity = [1 0 1 0 1 0 1];
 
 % % Второй элемент массива
 % set2 = UAC_BarringInfoSet();
-% set2.uac_BarringFactor = 'p10';
-% set2.uac_BarringTime = 's16';
-% set2.uac_BarringForAccessIdentity = [0 1 0 1 0 1 0];
+% set2.uac_BarringFactor = UAC_BarringFactor('p10');
+% set2.uac_BarringTime = UAC_BarringTime('s16');
+% set1.uac_BarringForAccessIdentity = [0 0 0 0 1 0 1];
 
 % Собираем SIB1
 cfgSIB1.uac_BarringInfo = UAC_BarringInfo(set1);
-% cfgSIB1.uac_BarringInfo = UAC_BarringInfo(set1, set2);
+% cfgSIB1.uac_BarringInfo = UAC_BarringInfo(set1, set2);%для нескольких элементов
 
