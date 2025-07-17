@@ -1,6 +1,6 @@
-classdef CellReservedForOperatorUse
+classdef CellReservedForOperatorUse < int8
     enumeration
-        reserved
-        notReserved
+        reserved (1)
+        notReserved (0)
     end
 end

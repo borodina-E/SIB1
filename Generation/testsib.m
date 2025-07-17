@@ -21,7 +21,8 @@
 %     └── UAC_BarringInfoSetList
 %         └── UAC_BarringInfoSet
 %             ├── UAC_BarringFactor
-%             └── UAC_BarringTime
+%             ├── UAC_BarringTime
+%             └── UAC_BarringForAccessIdentity
 
 
 cfgSIB1 = SIB1;
@@ -30,41 +31,42 @@ cfgSIB1 = SIB1;
 % Первый элемент массива
 plmn1 = PLMN_Identity();
 plmn1.mcc.mcc = [2 5 0]; 
-plmn1.mnc.mnc = [9 9];   
+plmn1.mnc.mnc = [0 9];   
 
-% % Второй элемент массива
-% plmn2 = PLMN_Identity();
-% plmn2.mcc.mcc = [3 1 0]; 
-% plmn2.mnc.mnc = [0 1];   
+% Второй элемент массива
+plmn2 = PLMN_Identity();
+plmn2.mcc.mcc = [3 1 0]; 
+plmn2.mnc.mnc = [0 1];   
 
 % Создаём PLMN_IdentityInfo
 % Первый элемент массива
 info1 = PLMN_IdentityInfo();
-info1.plmn_IdentityList = plmn1;
+info1 = info1.addElements(plmn1,plmn2);
+%info1.plmn_IdentityList = plmn1;
 info1.cellIdentity = CellIdentity();  
 info1.cellIdentity.cellIdentity = ones(1,36);
-info1.cellReservedForOperatorUse = CellReservedForOperatorUse.reserved;
+info1.cellReservedForOperatorUse = CellReservedForOperatorUse('reserved');
+%disp(info1.cellReservedForOperatorUse)вывод строкового значения
 
-
-% % Второй элемент массива
-% info2 = PLMN_IdentityInfo();
-% info2.plmn_IdentityList = plmn2;
-%info2.cellIdentity = CellIdentity();  
-%info2.cellIdentity.cellIdentity = ones(1,35);
-%info2.cellReservedForOperatorUse = CellReservedForOperatorUse.notReserved;
-
+% Второй элемент массива
+info2 = PLMN_IdentityInfo();
+info2.plmn_IdentityList = plmn2;
+info2.cellIdentity = CellIdentity();  
+info2.cellIdentity.cellIdentity = ones(1,36);
+info2.cellReservedForOperatorUse = CellReservedForOperatorUse('notReserved');
 
 % Собираем SIB1
-cfgSIB1.cellAccessRelatedInfo = CellAccessRelatedInfo(info1);
-%cfgSIB1.cellAccessRelatedInfo = CellAccessRelatedInfo(info1, info2); %для нескольких элементов
+%cfgSIB1.cellAccessRelatedInfo = CellAccessRelatedInfo(info1);
+cfgSIB1.cellAccessRelatedInfo = CellAccessRelatedInfo(info1, info2); %для нескольких элементов
 
-cfgSIB1.cellSelectionInfo.q_RxLevMin.q_RxLevMin = -30;
+%cfgSIB1.cellSelectionInfo.q_RxLevMin.q_RxLevMin = -30;
 
-% Первый элемент массива
-set1 = UAC_BarringInfoSet();
-set1.uac_BarringFactor = UAC_BarringFactor('p05');
-set1.uac_BarringTime = UAC_BarringTime('s8');
-set1.uac_BarringForAccessIdentity = [1 0 1 0 1 0 1];
+
+% % Первый элемент массива
+% set1 = UAC_BarringInfoSet();
+% set1.uac_BarringFactor = UAC_BarringFactor('p05');
+% set1.uac_BarringTime = UAC_BarringTime('s8');
+% set1.uac_BarringForAccessIdentity = [1 0 1 0 1 0 1];
 
 % % Второй элемент массива
 % set2 = UAC_BarringInfoSet();
@@ -72,7 +74,22 @@ set1.uac_BarringForAccessIdentity = [1 0 1 0 1 0 1];
 % set2.uac_BarringTime = UAC_BarringTime('s16');
 % set1.uac_BarringForAccessIdentity = [0 0 0 0 1 0 1];
 
-% Собираем SIB1
-cfgSIB1.uac_BarringInfo = UAC_BarringInfo(set1);
-% cfgSIB1.uac_BarringInfo = UAC_BarringInfo(set1, set2);%для нескольких элементов
+% % Собираем SIB1
+% cfgSIB1.uac_BarringInfo = UAC_BarringInfo(set1);
+% % cfgSIB1.uac_BarringInfo = UAC_BarringInfo(set1, set2);%для нескольких элементов
 
+% %проверка на наличие поля
+% if isprop(cfgSIB1, 'uac_BarringInfo')
+%     disp('Свойство uac_BarringInfo присутствует.');
+% else
+%     disp('Свойство uac_BarringInfo отсутствует.');
+% end
+% 
+% if isprop(cfgSIB1.uac_BarringInfo.uac_BarringInfoSetList, 'uac_BarringFactor')
+%     disp('Cвойство uac_BarringFactor присутствует в cfgSIB1.uac_BarringInfo.');
+% else
+%     disp('Свойство uac_BarringFactor отсутствует в cfgSIB1.uac_BarringInfo.');
+% end
+
+%ЭМУЛЯТОР КОДИРОВАНИЯ
+encodedBits = Encoder(cfgSIB1);

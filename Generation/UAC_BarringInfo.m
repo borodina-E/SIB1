@@ -10,7 +10,7 @@ classdef UAC_BarringInfo
         function obj = UAC_BarringInfo(varargin) %varargin - cell-массив, специальная переменная в MATLAB, 
             % используемая для обработки произвольного количества входных аргументов
             obj.uac_BarringInfoSetList = UAC_BarringInfoSet.empty(); %инициализация пустым массивом
-            if nargin > 0
+            if nargin > 0 %число переданных аргументов не 0
                 obj = obj.addElements(varargin{:}); %если при создании объекта создаются элементы в виде массивов
                 %то вызывается функция добавления элементов, в которую распаковываются значения varargin
             end

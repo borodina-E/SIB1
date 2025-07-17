@@ -1,13 +1,13 @@
-classdef UAC_BarringFactor
+classdef UAC_BarringFactor 
     enumeration
-        p00
+        p00 
         p05
-        p10
-        p15
-        p20
-        p25
-        p30
-        p40
+        p10 
+        p15 
+        p20 
+        p25 
+        p30 
+        p40 
         p50
         p60
         p70
