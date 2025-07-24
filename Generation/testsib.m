@@ -36,7 +36,7 @@ plmn1.mnc.mnc = [0 9];
 % Второй элемент массива
 plmn2 = PLMN_Identity();
 plmn2.mcc.mcc = [3 1 0]; 
-plmn2.mnc.mnc = [0 1];   
+plmn2.mnc.mnc = [0 1 5];   
 
 % Создаём PLMN_IdentityInfo
 % Первый элемент массива
@@ -78,18 +78,8 @@ cfgSIB1.cellAccessRelatedInfo = CellAccessRelatedInfo(info1, info2); %для н�
 % cfgSIB1.uac_BarringInfo = UAC_BarringInfo(set1);
 % % cfgSIB1.uac_BarringInfo = UAC_BarringInfo(set1, set2);%для нескольких элементов
 
-% %проверка на наличие поля
-% if isprop(cfgSIB1, 'uac_BarringInfo')
-%     disp('Свойство uac_BarringInfo присутствует.');
-% else
-%     disp('Свойство uac_BarringInfo отсутствует.');
-% end
-% 
-% if isprop(cfgSIB1.uac_BarringInfo.uac_BarringInfoSetList, 'uac_BarringFactor')
-%     disp('Cвойство uac_BarringFactor присутствует в cfgSIB1.uac_BarringInfo.');
-% else
-%     disp('Свойство uac_BarringFactor отсутствует в cfgSIB1.uac_BarringInfo.');
-% end
 
 %ЭМУЛЯТОР КОДИРОВАНИЯ
 encodedBits = Encoder(cfgSIB1);
+
+sib1 = Decoder(encodedBits);

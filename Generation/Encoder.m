@@ -153,14 +153,15 @@ nPLMN_IdentityInfo = nPLMN_IdentityInfo(1,2);
                 mnc = reshape(mnc, 1, 12);
                 end
                 bits = [bits, mnc];
-                %CellIdentity (41 - 76)
-                bits = [bits, cfgSIB1.cellAccessRelatedInfo.plmn_IdentityInfoList(i).cellIdentity.cellIdentity];
-                %cellReservedForOperatorUse (76 - 77)
-                bits = [bits, double(cfgSIB1.cellAccessRelatedInfo.plmn_IdentityInfoList(i).cellReservedForOperatorUse)];
+               
                 %if bits(16)...end
                 %...
                 %if bits(20)...end
              end
+             %CellIdentity (41 - 76)
+            bits = [bits, cfgSIB1.cellAccessRelatedInfo.plmn_IdentityInfoList(i).cellIdentity.cellIdentity];
+            %cellReservedForOperatorUse (76 - 77)
+            bits = [bits, double(cfgSIB1.cellAccessRelatedInfo.plmn_IdentityInfoList(i).cellReservedForOperatorUse)];
           end
       %if bits(12)...end
       %...
