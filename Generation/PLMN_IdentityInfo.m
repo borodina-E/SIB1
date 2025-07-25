@@ -11,7 +11,7 @@ classdef PLMN_IdentityInfo
         
         function obj = PLMN_IdentityInfo(varargin)
             obj.cellIdentity = CellIdentity();
-             obj.cellReservedForOperatorUse = 1; %зададим значение по умолчанию
+             obj.cellReservedForOperatorUse = 0; %зададим значение по умолчанию
               obj.plmn_IdentityList = PLMN_Identity.empty();
              if nargin > 0
               obj = obj.addElements(varargin{:}); 

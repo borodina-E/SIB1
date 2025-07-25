@@ -52,7 +52,7 @@ info1.cellReservedForOperatorUse = CellReservedForOperatorUse('reserved');
 info2 = PLMN_IdentityInfo();
 info2.plmn_IdentityList = plmn2;
 info2.cellIdentity = CellIdentity();  
-info2.cellIdentity.cellIdentity = ones(1,36);
+info2.cellIdentity.cellIdentity = zeros(1,36);
 info2.cellReservedForOperatorUse = CellReservedForOperatorUse('notReserved');
 
 % Собираем SIB1
@@ -79,7 +79,6 @@ cfgSIB1.cellAccessRelatedInfo = CellAccessRelatedInfo(info1, info2); %для н�
 % % cfgSIB1.uac_BarringInfo = UAC_BarringInfo(set1, set2);%для нескольких элементов
 
 
-%ЭМУЛЯТОР КОДИРОВАНИЯ
+%Эмулятор кодирования
 encodedBits = Encoder(cfgSIB1);
-
 sib1 = Decoder(encodedBits);
