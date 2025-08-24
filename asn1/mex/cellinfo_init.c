@@ -54,7 +54,7 @@ CellAccessRelatedInfo_t* initialize_cell_access_related_info(void) {
     asn_set_empty(&plmn->mcc->list);
 
     for (int i = 0; i < 3; i++) {
-        long *digit = calloc(1, sizeof(long));
+        MCC_MNC_Digit_t *digit = calloc(1, sizeof(MCC_MNC_Digit_t));
         if (!digit) {
             ASN_STRUCT_FREE(asn_DEF_SIB1, cell_info);
             return NULL;
@@ -71,7 +71,7 @@ CellAccessRelatedInfo_t* initialize_cell_access_related_info(void) {
     // Инициализация MNC
     asn_set_empty(&plmn->mnc.list);
     for (int i = 0; i < 2; i++) {
-        long *digit = calloc(1, sizeof(long));
+      MCC_MNC_Digit_t *digit = calloc(1, sizeof(MCC_MNC_Digit_t));
         if (!digit) {
             ASN_STRUCT_FREE(asn_DEF_SIB1, cell_info);
             return NULL;
