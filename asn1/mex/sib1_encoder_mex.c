@@ -5,7 +5,8 @@
 #include "cellinfo_init.h" 
 
 // Функция обратного вызова, которая собирает закодированные данные в mxArray
-static int mxarray_collector(const void *buffer, size_t size, void *app_key) { //переход к матлабу
+static int mxarray_collector(const void *buffer, size_t size, void *app_key) { //см.per_support.h (98)
+//вызывается в _uper_encode_flush_outp см.per_encoder.c
     mxArray **output_ptr = (mxArray **)app_key;
     mxArray *output_array = *output_ptr;
     size_t existing_size = mxGetNumberOfElements(output_array);//длина выходного массива
@@ -38,7 +39,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 // nrhs - количество входных аргументов 
 // prhs - массив указателей на входные переменные
     SIB1_t *sib1 = NULL; // SIB1_t - тип определенный в SIB1.h
-    asn_enc_rval_t enc_rval; //используется как возвращаемое значение енкодера  asn_codecs.h
+    asn_enc_rval_t enc_rval; //используется как возвращаемое значение енкодера asn_codecs.h
     mxArray *output_array = NULL; //mxArray - тип данных для массива MATLAB 
 
     // 1. Выделение памяти под структуру SIB1
