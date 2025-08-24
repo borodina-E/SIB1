@@ -131,7 +131,7 @@ ZcVec = [2:16 18:2:32 36:4:64 72:8:128 144:16:256 288:32:384];
         else
             E = nlayers*Qm*ceil(outlen/(nlayers*Qm*C));
         end
-        out = [out; cbsRateMatch(in(:,r+1),E,k0,Ncb,Qm)]; %#ok<AGROW>
+        out = [out; cbsRateMatch(in(:,r+1),E,k0,Ncb,Qm)]; 
     end
 
 end

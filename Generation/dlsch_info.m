@@ -1,11 +1,12 @@
 % function for DLSCH info: 
-function info = dlsch_info(tbs)
+function info = dlsch_info(tbs,R)
 arguments 
     tbs
+    R
 end
 
 % Get base graph number and CRC information
-bginfo = getBgnInfo(tbs);
+bginfo = getBgnInfo(tbs,R);
 
 % Get code block segment information
 cbinfo = getCBSinfo(bginfo.B, bginfo.BGN);
@@ -33,7 +34,7 @@ end
 
 
 % function 1 for: L, bgn, B
-function info = getBgnInfo(A)
+function info = getBgnInfo(A,R)
     % Cast A to double, to make all the output fields have same data type
     A = double(A);
 
