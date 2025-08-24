@@ -11,16 +11,22 @@ static int mxarray_collector(const void *buffer, size_t size, void *app_key) { /
     mxArray *output_array = *output_ptr;
     size_t existing_size = mxGetNumberOfElements(output_array);//длина выходного массива
     size_t new_size = existing_size + size;//формирование новой длины
+    void *old_data = mxGetData(output_array); //сохранение старого указателя
 
     // Выделяем память под новые данные
-    mxSetData(output_array, mxRealloc(mxGetData(output_array), new_size * sizeof(uint8_t)));
-    //mxGetData возвращает указатель на данные
-    //mxRealloc принимает 2 аргумента: первый - указатель на начало существующего блока памяти, размер которого нужно
-    //изменить, второй - новый размер блока памяти в байтах. Возвращает указатель на измененный блок памяти.
-    //mxSetData записывает в output_array адрес данных блока созданного mxRealloc
-        if (mxGetData(output_array) == NULL && new_size > 0) {
+    void *new_data = mxRealloc(old_data, new_size * sizeof(uint8_t));
+    if (new_data == NULL && new_size > 0) {
         mexPrintf("mxRealloc failure\n");
         return -1;
+    }
+    //mxGetData возвращает указатель на данные
+    //mxRealloc принимает 2 аргумента: первый - указатель на начало существующего блока памяти, размер которого нужно
+    //изменить, второй - новый размер блока памяти в байтах. Возвращает указатель на измененный блок памяти. Может переместить данные если 
+    //не хватает места.
+    //mxSetData записывает в output_array адрес данных блока созданного mxRealloc
+    if (new_data != old_data) {
+    mxSetData(output_array, new_data);  // Обновляем внутри mxArray
+    *output_ptr = new_data;             // Обновляем переменную в mexFunction
     }
 
     // Копируем новые данные в mxArray
