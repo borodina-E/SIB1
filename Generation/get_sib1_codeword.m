@@ -1,5 +1,5 @@
 % function for get sib1 codeword
-function codeword = get_sib1_codeword(dci_config,coreset_config,dmrsTypeAPosition)
+function [codeword,encoded,word] = get_sib1_codeword(dci_config,coreset_config,dmrsTypeAPosition)
 arguments 
     dci_config 
     coreset_config
@@ -14,6 +14,7 @@ outlen = 2640;       % общее кол-во кодируемых бит. Gd*qm
                      % 2640. 79728 слишком много для sib1 message
                      % при данных TDRA 2640 - max заполнение
 LBS = 25344;         % Это число - max размер кодового слова
+TargetCodeRate = 0.5137;
 % расчёт outlen исходя из TDRA и RIV 
 
 riv_bits = num2str(dci_config.RIV_bits(3:length(dci_config.RIV_bits)));
@@ -24,6 +25,7 @@ RIV = bin2dec(riv_bits);
 % sib1 много RE не выделяется, соответственно, второе условие не нужно
 if RIV < (coreset_config.size_rbs* (coreset_config.size_rbs +1))
     LRbs = floor(RIV/coreset_config.size_rbs) + 1; % length allocated resource blocks
+    %RBstart = mod(RIV,coreset_config.size_rbs);
 end
 
 % For time domain check TDRA from dci_config. 38.214 table 5.1.2.1.1-2
@@ -34,12 +36,16 @@ end
 outlen = 2*12*LRbs*(L-1); % 2640. 11 ofdm тк 1-ый только под dmrs
                           % *2 для полного заполнения pdsch (qpsk мод)
 
+out_mcs = 1288 * 2; % mcs index 61 * 2 qpsk mod = 2576 вместо 2640
+% но TBS это же полезная нагрузка. В нашем случае нужен просто индекс
+% Данный подход имеет место быть, но можно и без него
+
 % 1. здесь будет функция генерации полезной нагрузки.
 % пока что зададим значение sib1 в виде 100х1 бит 
-word = int8(randi([0, 1], 100, 1));
+word = int8(randi([0, 1], 104, 1));
 
 % 2. info for ldpc and crc
-chinfo = dlsch_info(length(word));
+chinfo = dlsch_info(length(word),TargetCodeRate);
 
 % 3. crc use crc_type = 16 
 word_for_crc = (word.');

@@ -14,6 +14,7 @@ end
     % S - start symbol OFDM = 2.
     % L - number symbols OFDM = 12.
     % dmrsTypeAPosition = 2 
+    % PDSCH_mapping_type = 1; % A
     % 2. RIV
     % size_rbs = 48 rbs
     % LRbs - length allocated resource blocks = 10 rbs
@@ -37,7 +38,7 @@ end
     % 3. Маппинг DM-RS (весь символ)
     dmrs_idx = 1;
     for rb = RBstart:rb_end
-        for sc = 1:2:12 % Type 1: нечётные поднесущие
+        for sc = 1:2:12 % Type 1: нечётные поднесущие map_type = 1
             re_pos = rb * 12 + sc;
             resource_grid.resource_grid(re_pos, dmrs_symbol) = dmrs_seq(dmrs_idx);
             dmrs_idx = dmrs_idx + 1;

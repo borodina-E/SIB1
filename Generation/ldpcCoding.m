@@ -44,16 +44,6 @@ function codewords = encode(infoBits,bgn,Zc)
         bgs = coder.load('baseGraph');
     end
 
-    %persistent encoderCfg
-    %if isempty(encoderCfg)
-    %    encoderCfg = coder.nullcopy(cell(2,8,384)); % bgn, setIdx, Zc
-    %end
-    
-    %persistent doInit
-    %if isempty(doInit)
-    %    doInit = true(2,8,384); % bgn, setIdx, Zc
-    %end
-
      % Get lifting set number
     ZSets = {[2  4  8  16  32  64 128 256],... % Set 1
              [3  6 12  24  48  96 192 384],... % Set 2
@@ -116,14 +106,10 @@ function codewords = encode(infoBits,bgn,Zc)
             end
     end
 
-    %if doInit(bgn,setIdx,Zc)
-    %    % Get shift values matrix
+  
+    % Get shift values matrix
     P = calcShiftValues(V,Zc);
-        %encoderCfg{bgn,setIdx,Zc} = ldpcEncoderConfig(sparse(logical(ldpcQuasiCyclicMatrix(Zc,P))));
-        %doInit(bgn,setIdx,Zc) = true;
-    %end
     H = ldpcQuasiCyclicMatrix(Zc, P);
-   % codewords = ldcp_coding(infoBits,encoderCfg{bgn,setIdx,Zc});
     % function 
     codewords = ldpc_encode_simple(infoBits, P, Zc, H);
 
@@ -185,12 +171,6 @@ function codeword = ldpc_encode_simple(info_bits, P, Zc, H)
     
     [m, n] = size(P);
     K = n*Zc - m*Zc; % Кодовая скорость R = K/(n*Zc)
-    
-    % Проверка размеров
-    assert(length(info_bits) == K, 'Неверный размер входных данных');
-    
-    % Построение матрицы (MATLAB-совместимое)
-    %H = ldpcQuasiCyclicMatrix(P, Zc);
     
     % Разделение на [A | B] (проверьте порядок столбцов!)
     A = H(:, 1:K);

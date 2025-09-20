@@ -1,5 +1,5 @@
 % function for create RG PDCSH and generate SIB1
-function resource_grid_pdsch = createPdschFrame(coreset_config,dci_config,sib1_config,codeword_sib1,nID,n_RNTI,...
+function [resource_grid_pdsch,sib1_config] = createPdschFrame(coreset_config,dci_config,sib1_config,codeword_sib1,nID,n_RNTI,...
     dmrsTypeAPosition)
 arguments
     coreset_config  % size_rbs - size crst0
