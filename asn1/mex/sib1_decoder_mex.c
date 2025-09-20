@@ -40,19 +40,27 @@ void print_plmn_info(const PLMN_IdentityInfo_t *plmn_info) { //принимае�
         mexPrintf("\n");
     }
 
-    // TAC
-    mexPrintf("   TAC (hex): ");
-    for (size_t i = 0; i < plmn_info->trackingAreaCode.size; i++) {//см.BIT_STRING.h чтение байтов
-        mexPrintf("%02X", plmn_info->trackingAreaCode.buf[i]);
-    }
-    mexPrintf("\n");
-
     // Cell Identity
     mexPrintf("   Cell Identity (hex): ");
     for (size_t i = 0; i < plmn_info->cellIdentity.size; i++) {//см.BIT_STRING.h
         mexPrintf("%02X", plmn_info->cellIdentity.buf[i]);
     }
     mexPrintf("\n");
+
+
+ // cellReservedForOperatorUse
+    mexPrintf("   Cell Reserved For Operator Use: ");
+    switch (plmn_info->cellReservedForOperatorUse) {
+        case 0: // Или константа, соответствующая reserved
+            mexPrintf("Reserved\n");
+            break;
+        case 1: // Или константа, соответствующая notReserved
+            mexPrintf("Not Reserved\n");
+            break;
+        default:
+            mexPrintf("Unknown (%ld)\n", plmn_info->cellReservedForOperatorUse);
+            break;
+    }
 }
 
 // Главная функция mexFunction

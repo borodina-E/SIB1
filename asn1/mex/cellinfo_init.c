@@ -3,6 +3,7 @@
 #include "asn_application.h"
 #include <stdlib.h>
 #include <string.h>
+#include "PLMN-IdentityInfo.h"
 
 CellAccessRelatedInfo_t* initialize_cell_access_related_info(void) {
     CellAccessRelatedInfo_t* cell_info = calloc(1, sizeof(CellAccessRelatedInfo_t));
@@ -85,19 +86,6 @@ CellAccessRelatedInfo_t* initialize_cell_access_related_info(void) {
         }
     }
 
-    // Инициализация TAC
-    uint8_t *tac_buf = calloc(3, sizeof(uint8_t));
-    if (!tac_buf) {
-        ASN_STRUCT_FREE(asn_DEF_SIB1, cell_info);
-        return NULL;
-    }
-    tac_buf[0] = 0x12;
-    tac_buf[1] = 0x34;
-    tac_buf[2] = 0x56;
-    plmn_info->trackingAreaCode.buf = tac_buf;
-    plmn_info->trackingAreaCode.size = 3;
-    plmn_info->trackingAreaCode.bits_unused = 0;
-
     // Инициализация Cell Identity
     uint8_t *cell_id_buf = calloc(5, sizeof(uint8_t));
     if (!cell_id_buf) {
@@ -112,6 +100,9 @@ CellAccessRelatedInfo_t* initialize_cell_access_related_info(void) {
     plmn_info->cellIdentity.buf = cell_id_buf;
     plmn_info->cellIdentity.size = 5;
     plmn_info->cellIdentity.bits_unused = 4;
+
+// Инициализация cellReservedForOperatorUse
+  plmn_info->cellReservedForOperatorUse = 0; 
 
     return cell_info;
 }

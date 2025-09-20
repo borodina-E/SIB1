@@ -12,8 +12,8 @@
 #include <asn_application.h>
 
 /* Including external dependencies */
-#include "TrackingAreaCode.h"
 #include "CellIdentity.h"
+#include <NativeEnumerated.h>
 #include <asn_SEQUENCE_OF.h>
 #include <constr_SEQUENCE_OF.h>
 #include <constr_SEQUENCE.h>
@@ -21,6 +21,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/* Dependencies */
+typedef enum cellReservedForOperatorUse {
+	cellReservedForOperatorUse_reserved	= 0,
+	cellReservedForOperatorUse_notReserved	= 1
+} e_cellReservedForOperatorUse;
 
 /* Forward declarations */
 struct PLMN_Identity;
@@ -33,14 +39,19 @@ typedef struct PLMN_IdentityInfo {
 		/* Context for parsing across buffer boundaries */
 		asn_struct_ctx_t _asn_ctx;
 	} plmn_IdentityList;
-	TrackingAreaCode_t	 trackingAreaCode;
 	CellIdentity_t	 cellIdentity;
+	long	 cellReservedForOperatorUse;
+	/*
+	 * This type is extensible,
+	 * possible extensions are below.
+	 */
 	
 	/* Context for parsing across buffer boundaries */
 	asn_struct_ctx_t _asn_ctx;
 } PLMN_IdentityInfo_t;
 
 /* Implementation */
+/* extern asn_TYPE_descriptor_t asn_DEF_cellReservedForOperatorUse_5;	// (Use -fall-defs-global to expose) */
 extern asn_TYPE_descriptor_t asn_DEF_PLMN_IdentityInfo;
 
 #ifdef __cplusplus
