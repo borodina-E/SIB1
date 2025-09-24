@@ -43,8 +43,25 @@ CellAccessRelatedInfo_t* initialize_cell_access_related_info(void) {
         free(cell_info);
         return NULL;
     }
+    
+    // Инициализация MNC
+    asn_set_empty(&plmn->mnc.list);
+    for (int i = 0; i < 2; i++) {
+      MCC_MNC_Digit_t *digit = calloc(1, sizeof(MCC_MNC_Digit_t));
+        if (!digit) {
+            ASN_STRUCT_FREE(asn_DEF_SIB1, cell_info);
+            return NULL;
+        }
+        *digit = (i == 0 ? 0 : 1); // MNC = 01
 
-    // Инициализация MCC
+        if (ASN_SET_ADD(&plmn->mnc.list, digit) != 0) {
+            free(digit);
+            ASN_STRUCT_FREE(asn_DEF_SIB1, cell_info);
+            return NULL;
+        }
+    }
+    
+ // Инициализация MCC
     plmn->mcc = calloc(1, sizeof(MCC_t));
     if (!plmn->mcc) {
         free(plmn);
@@ -63,23 +80,6 @@ CellAccessRelatedInfo_t* initialize_cell_access_related_info(void) {
         *digit = (i == 0 ? 3 : (i == 1 ? 5 : 0)); // MCC = 250
 
         if (ASN_SET_ADD(&plmn->mcc->list, digit) != 0) {
-            free(digit);
-            ASN_STRUCT_FREE(asn_DEF_SIB1, cell_info);
-            return NULL;
-        }
-    }
-
-    // Инициализация MNC
-    asn_set_empty(&plmn->mnc.list);
-    for (int i = 0; i < 2; i++) {
-      MCC_MNC_Digit_t *digit = calloc(1, sizeof(MCC_MNC_Digit_t));
-        if (!digit) {
-            ASN_STRUCT_FREE(asn_DEF_SIB1, cell_info);
-            return NULL;
-        }
-        *digit = (i == 0 ? 0 : 1); // MNC = 01
-
-        if (ASN_SET_ADD(&plmn->mnc.list, digit) != 0) {
             free(digit);
             ASN_STRUCT_FREE(asn_DEF_SIB1, cell_info);
             return NULL;
@@ -105,4 +105,5 @@ CellAccessRelatedInfo_t* initialize_cell_access_related_info(void) {
   plmn_info->cellReservedForOperatorUse = 0; 
 
     return cell_info;
+    
 }

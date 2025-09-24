@@ -1,0 +1,30 @@
+SIB1 DEFINITIONS AUTOMATIC TAGS::= BEGIN
+maxPLMN INTEGER ::= 12 
+SIB1 ::= SEQUENCE {
+    cellAccessRelatedInfo CellAccessRelatedInfo
+}
+CellAccessRelatedInfo ::= SEQUENCE {
+    plmn-IdentityInfoList PLMN-IdentityInfoList,
+    ...-- Extension marker
+}
+ 
+PLMN-IdentityInfoList ::= SEQUENCE (SIZE (1..maxPLMN)) OF PLMN-IdentityInfo
+PLMN-IdentityInfo ::= SEQUENCE {
+    plmn-IdentityList SEQUENCE (SIZE (1..maxPLMN)) OF PLMN-Identity,
+    cellIdentity CellIdentity,
+    cellReservedForOperatorUse ENUMERATED {reserved, notReserved},
+    ...-- Extension marker
+}
+CellIdentity ::= BIT STRING (SIZE (36))
+PLMN-Identity ::= SEQUENCE {
+    mcc MCC  OPTIONAL,  -- Cond MCC
+    mnc MNC
+}
+MCC ::= SEQUENCE (SIZE (3)) OF MCC-MNC-Digit
+MNC ::= SEQUENCE (SIZE (2..3)) OF MCC-MNC-Digit
+MCC-MNC-Digit ::= INTEGER (0..9)
+END
+
+
+
+
